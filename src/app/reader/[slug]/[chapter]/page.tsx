@@ -159,7 +159,7 @@ export default async function ReaderPage({ params }: ReaderPageProps) {
     );
   }
 
-  const genreConfig = getGenreConfig(story.genre);
+  const genreConfig = getGenreConfig(story.genre as any);
   const prevChapter = chapterNum > 1 ? story.chapters[chapterNum - 2] : null;
   const nextChapter = chapterNum < story.chapterCount ? story.chapters[chapterNum] : null;
   const paragraphs = chapter.content.split('\n\n').filter(p => p.trim().length > 0);
@@ -303,7 +303,7 @@ export default async function ReaderPage({ params }: ReaderPageProps) {
           
           <div className="flex-1 flex items-center justify-center gap-3 min-w-0">
             <Badge variant="genre" className="text-xs whitespace-nowrap" style={{ background: `linear-gradient(135deg, ${genreConfig.accentColor}, ${genreConfig.accentHover})` }}>
-              {GENRE_LABELS[story.genre] || story.genre}
+              {GENRE_LABELS[story.genre as keyof typeof GENRE_LABELS] || story.genre}
             </Badge>
             <h1 className="text-sm font-medium truncate text-slate-100">{story.title}</h1>
           </div>
@@ -509,8 +509,8 @@ export default async function ReaderPage({ params }: ReaderPageProps) {
                       min={12}
                       max={28}
                       step={1}
-                      value={[fontSize]}
-                      onValueChange={([value]) => setFontSize(value)}
+                      value={fontSize}
+                      onValueChange={(value) => setFontSize(value)}
                     />
                   </div>
                   
@@ -523,8 +523,8 @@ export default async function ReaderPage({ params }: ReaderPageProps) {
                       min={1.4}
                       max={2.2}
                       step={0.05}
-                      value={[lineHeight]}
-                      onValueChange={([value]) => setLineHeight(value)}
+                      value={lineHeight}
+                      onValueChange={(value) => setLineHeight(value)}
                     />
                   </div>
                   

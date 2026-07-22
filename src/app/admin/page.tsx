@@ -125,7 +125,8 @@ export default function AdminPage() {
     setIsGeneratingCover(true);
     setError(null);
 
-    const coverPrompt = formData.coverPrompt || `${generatedStory.title}, ${GENRE_LABELS[formData.genre] || formData.genre} genre, ${formData.tone} tone, professional book cover`;
+    const genreLabel = GENRE_LABELS[formData.genre as keyof typeof GENRE_LABELS] || formData.genre;
+    const coverPrompt = formData.coverPrompt || `${generatedStory.title}, ${genreLabel} genre, ${formData.tone} tone, professional book cover`;
 
     try {
       const response = await fetch('/api/admin/generate-cover', {
@@ -534,7 +535,7 @@ export default function AdminPage() {
                             <h3 className="text-2xl font-bold text-slate-100">{generatedStory.title}</h3>
                             <p className="text-amber-400 italic">{generatedStory.tagline}</p>
                             <Badge variant="genre" className="text-sm" style={{ background: `linear-gradient(135deg, ${genres.find(g => g.key === generatedStory?.genre)?.accentColor || '#fbbf24'}, ${genres.find(g => g.key === generatedStory?.genre)?.accentHover || '#f59e0b'})` }}>
-                              {GENRE_LABELS[generatedStory.genre] || generatedStory.genre}
+                              {GENRE_LABELS[generatedStory.genre as keyof typeof GENRE_LABELS] || generatedStory.genre}
                             </Badge>
                           </div>
 
@@ -645,7 +646,7 @@ export default function AdminPage() {
                         <div className="grid grid-cols-3 gap-4">
                           <div>
                             <Label className="text-slate-400 text-sm">Genre</Label>
-                            <Input value={GENRE_LABELS[generatedStory.genre] || generatedStory.genre} readOnly className="bg-slate-800 border-slate-700" />
+                            <Input value={GENRE_LABELS[generatedStory.genre as keyof typeof GENRE_LABELS] || generatedStory.genre} readOnly className="bg-slate-800 border-slate-700" />
                           </div>
                           <div>
                             <Label className="text-slate-400 text-sm">Total Bab</Label>
@@ -905,7 +906,7 @@ export default function AdminPage() {
                         <span className="text-amber-400 font-mono">8192</span>
                       </Label>
                       <Slider
-                        defaultValue={[8192]}
+                        defaultValue={8192}
                         min={1000}
                         max={8192}
                         step={500}

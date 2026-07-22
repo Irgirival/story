@@ -216,7 +216,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
             <div className="max-w-5xl mx-auto">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <Badge variant="genre" className="text-sm px-3 py-1" style={{ background: `linear-gradient(135deg, ${genreConfig.accentColor}, ${genreConfig.accentHover})` }}>
-                  {GENRE_LABELS[story.genre] || story.genre}
+                  {GENRE_LABELS[story.genre as keyof typeof GENRE_LABELS] || story.genre}
                 </Badge>
                 {story.status === 'PUBLISHED' && (
                   <Badge variant="secondary" className="text-xs">Published</Badge>
@@ -322,7 +322,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
                     </div>
                     <div className="p-5">
                       <Badge variant="genre" className="mb-2" style={{ background: `linear-gradient(135deg, ${getGenreConfig(relatedStory.genre).accentColor}, ${getGenreConfig(relatedStory.genre).accentHover})` }}>
-                        {GENRE_LABELS[relatedStory.genre] || relatedStory.genre}
+                        {GENRE_LABELS[relatedStory.genre as keyof typeof GENRE_LABELS] || relatedStory.genre}
                       </Badge>
                       <h3 className="font-semibold text-slate-100 group-hover:text-amber-400 transition-colors line-clamp-2 mb-2">
                         {relatedStory.title}

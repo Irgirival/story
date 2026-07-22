@@ -1,4 +1,4 @@
-import { Genre } from '@prisma/client';
+import { Genre } from '@/generated/prisma';
 
 export const GENRE_CONFIG: Record<Genre, {
   label: string;

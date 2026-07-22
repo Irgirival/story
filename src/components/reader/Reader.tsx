@@ -61,7 +61,7 @@ export function Reader({
   const readerRef = useRef<HTMLDivElement>(null);
   const progressUpdateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const genreConfig = getGenreConfig(story.genre);
+  const genreConfig = getGenreConfig(story.genre as any);
   const modeConfig = modeConfigs[readingMode];
 
   // Save progress to localStorage and call onProgressUpdate

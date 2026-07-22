@@ -74,7 +74,7 @@ export function StoryCard({ story, variant = 'default', priority = false }: Stor
           
           <div className="absolute top-3 left-3">
             <Badge variant="genre" className="text-xs px-2 py-1">
-              {GENRE_LABELS[story.genre] || story.genre}
+              {GENRE_LABELS[story.genre as keyof typeof GENRE_LABELS] || story.genre}
             </Badge>
           </div>
 

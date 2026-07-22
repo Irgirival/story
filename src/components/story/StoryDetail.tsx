@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { BookOpen, Clock, Eye, Heart, Star, Tag, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { cn, formatNumber, formatReadTime, getGenreConfig, GENRE_LABELS } from '@/lib/utils';
+import { cn, formatNumber, formatReadTime, GENRE_LABELS } from '@/lib/utils';
+import { getGenreConfig } from '@/lib/genre-config';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
@@ -38,12 +39,12 @@ interface StoryDetailProps {
 }
 
 export function StoryDetail({ story, userProgress }: StoryDetailProps) {
-  const genreConfig = getGenreConfig(story.genre);
+  const genreConfig = getGenreConfig(story.genre as any);
   const continueChapter = userProgress?.currentChapter || 1;
 
   return (
     <div className="relative">
-      <div className={cn('relative h-[400px] sm:h-[500px] rounded-2xl overflow-hidden', genreConfig.bg)}>
+      <div className={cn('relative h-[400px] sm:h-[500px] rounded-2xl overflow-hidden', `bg-gradient-to-br from-[${genreConfig.gradientFrom}] to-[${genreConfig.gradientTo}]`)}>
         {story.coverImageUrl ? (
           <Image
             src={story.coverImageUrl}
@@ -64,7 +65,7 @@ export function StoryDetail({ story, userProgress }: StoryDetailProps) {
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <Badge variant="genre" className="text-sm px-3 py-1">
-                {GENRE_LABELS[story.genre] || story.genre}
+                {GENRE_LABELS[story.genre as keyof typeof GENRE_LABELS] || story.genre}
               </Badge>
               {story.status === 'PUBLISHED' && (
                 <Badge variant="secondary" className="text-xs">
