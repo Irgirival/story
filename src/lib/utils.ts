@@ -28,7 +28,11 @@ export function formatNumber(num: number): string {
   return num.toString();
 }
 
-export function getGenreConfig(genre: string) {
+// Re-export from genre-config for compatibility
+export { getGenreConfig, GENRE_LABELS, GENRE_DESCRIPTIONS, getAllGenres } from './genre-config';
+
+// Legacy getGenreConfig for components still using the old shape
+export function getGenreConfigLegacy(genre: string) {
   const configs: Record<string, { accent: string; bg: string; particle: string }> = {
     KOSMOS: {
       accent: '#fbbf24', // amber-400
@@ -58,19 +62,3 @@ export function getGenreConfig(genre: string) {
   };
   return configs[genre] || configs.KOSMOS;
 }
-
-export const GENRE_LABELS: Record<string, string> = {
-  KOSMOS: 'Kosmos',
-  ALAM: 'Alam',
-  ROMANCE: 'Romance',
-  HOROR: 'Horor',
-  KONSPIRASI: 'Konspirasi',
-};
-
-export const GENRE_DESCRIPTIONS: Record<string, string> = {
-  KOSMOS: 'Petualangan di alam semesta, bintang, dan misteri antariksa',
-  ALAM: 'Kisah indah dan menakjubkan tentang alam semesta',
-  ROMANCE: 'Cinta, perasaan, dan hubungan manusia',
-  HOROR: 'Ketegangan, misteri, dan rasa takut yang menggugah',
-  KONSPIRASI: 'Rahasia tersembunyi, teori, dan kebenaran gelap',
-};

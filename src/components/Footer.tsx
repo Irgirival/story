@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { BookOpen, MessageSquare, GitBranch, Mail, Heart, Sparkles, ChevronRight } from 'lucide-react';
-import { getAllGenres, GENRE_LABELS } from '@/lib/genre-config';
+import { getAllGenres } from '@/lib/genre-config';
 
 export function Footer() {
   const genres = getAllGenres();

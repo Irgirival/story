@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { BookOpen, Star, Clock, Eye, Heart } from 'lucide-react';
-import { cn, formatNumber, formatReadTime, getGenreConfig, GENRE_LABELS } from '@/lib/utils';
+import { cn, formatNumber, formatReadTime, GENRE_LABELS } from '@/lib/utils';
+import { getGenreConfig } from '@/lib/genre-config';
 import { Badge } from '@/components/ui/badge';
 
 interface StoryCardProps {
@@ -27,7 +28,7 @@ interface StoryCardProps {
 }
 
 export function StoryCard({ story, variant = 'default', priority = false }: StoryCardProps) {
-  const genreConfig = getGenreConfig(story.genre);
+  const genreConfig = getGenreConfig(story.genre as any);
   const isFeatured = variant === 'featured';
 
   const cardStyles = {
@@ -63,7 +64,7 @@ export function StoryCard({ story, variant = 'default', priority = false }: Stor
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
             />
           ) : (
-            <div className={cn('w-full', isFeatured ? 'aspect-[2/3]' : variant === 'compact' ? 'aspect-square' : 'aspect-[2/3]'), genreConfig.bg}>
+            <div className={cn('w-full', isFeatured ? 'aspect-[2/3]' : variant === 'compact' ? 'aspect-square' : 'aspect-[2/3]', `bg-gradient-to-br from-[${genreConfig.gradientFrom}] to-[${genreConfig.gradientTo}]`)}>
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-6xl opacity-50">📖</span>
               </div>

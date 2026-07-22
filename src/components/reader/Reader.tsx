@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Sun, Moon, BookOpen, Menu, X, FontSize, Settings, Bookmark, Heart, Share2, Download } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sun, Moon, BookOpen, Menu, X, Type, Settings, Bookmark, Heart, Share2, Download } from 'lucide-react';
 import { cn, formatReadTime, getGenreConfig } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -59,7 +59,7 @@ export function Reader({
   const [readingProgress, setReadingProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
   const readerRef = useRef<HTMLDivElement>(null);
-  const progressUpdateTimeout = useRef<NodeJS.Timeout>();
+  const progressUpdateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const genreConfig = getGenreConfig(story.genre);
   const modeConfig = modeConfigs[readingMode];

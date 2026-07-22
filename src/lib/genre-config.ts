@@ -62,6 +62,22 @@ export const GENRE_CONFIG: Record<Genre, {
   },
 };
 
+export const GENRE_LABELS: Record<Genre, string> = {
+  KOSMOS: 'Kosmos',
+  ALAM: 'Alam',
+  ROMANCE: 'Romance',
+  HOROR: 'Horor',
+  KONSPIRASI: 'Konspirasi',
+};
+
+export const GENRE_DESCRIPTIONS: Record<Genre, string> = {
+  KOSMOS: 'Alam semesta, bintang, galaksi, dan misteri angkasa',
+  ALAM: 'Kisah indah tentang alam, hutan, lautan, dan makhluk hidup',
+  ROMANCE: 'Cinta, perasaan, dan hubungan yang mendalam',
+  HOROR: 'Ketegangan, misteri, dan rasa takut yang menggugah',
+  KONSPIRASI: 'Rahasia tersembunyi, teori, dan kebenaran gelap',
+};
+
 export function getGenreConfig(genre: Genre) {
   return GENRE_CONFIG[genre] || GENRE_CONFIG.KOSMOS;
 }

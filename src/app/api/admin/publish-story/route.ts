@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create story with chapters in transaction
-    const story = await prisma.$transaction(async (tx) => {
+    const story = await prisma.$transaction(async (tx: any) => {
       const newStory = await tx.story.create({
         data: {
           title,
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.error('Publish story error:', error);
-    
+
     if (error.code === 'P2002') {
       return NextResponse.json(
         { message: 'Judul sudah digunakan, coba judul lain' },

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Sun, Moon, BookOpen, Menu, X, FontSize, Settings, Bookmark, Heart, Share2, Download, RotateCcw, Home, Search, User, Volume2, VolumeX } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sun, Moon, BookOpen, Menu, X, Settings, Bookmark, Heart, Share2, Download, RotateCcw, Home, Search, User, Volume2, VolumeX } from 'lucide-react';
 import { getGenreConfig, GENRE_LABELS, formatReadTime, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -44,7 +44,7 @@ function generateChapterContent(chapterNum: number): string {
   const templates = [
     `Kapten Aria Voss duduk di kursi komando, matanya menatap layar navigasi yang memancarkan cahaya biru ke ruang gelap jembatan kendali. Kapal antariksa "Aurora" telah berlayar selama 14 bulan, menembus jarak 400 tahun cahaya dari Bumi. Di depannya, sistem Kepler-442 berputar diam-diam, bintang induknya mengeluarkan radiasi lembut yang menari-nari di antara asteroid.
 
-Sinyal itu datang tanpa предупредицинг—gelombang radio frekuensi rendah yang berulang setiap 2.73 detik. Polanya terlalu sempurna untuk alami, terlalu kompleks untuk acak. Itu adalah kode. Dan yang paling mengejutkan, itu menggunakan protokol komunikasi NASA yang ditinggalkan 200 tahun lalu.
+Sinyal itu datang tanpa peringatan—gelombang radio frekuensi rendah yang berulang setiap 2.73 detik. Polanya terlalu sempurna untuk alami, terlalu kompleks untuk acak. Itu adalah kode. Dan yang paling mengejutkan, itu menggunakan protokol komunikasi NASA yang ditinggalkan 200 tahun lalu.
 
 "Aria," suara Commander Reyes memecah keheningan. "Ini tidak mungkin."
 
@@ -52,7 +52,7 @@ Dia tidak menjawab. Jarinya menari di atas konsol, mengisolasi sinyal, memecahka
 
 Lagu itu ia kenal. Ibu kandungnya menyanyikannya setiap malam sebelum tidur—lagu Jawa kuno tentang bintang dan harapan. Tapi bagaimana lagu itu bisa sampai di sini, di ujung galaksi, dari peradaban yang seharusnya tidak pernah ada?`,
 
-    `Jembatan kendali sunyi, hanya dengaran gemetar mesin pendingin dan napas tercekik kru. Di layar utama, planet Kepler-442c membesar—dunia hijau-biru dengan dua bulan, atmosfera kaya oksigen, Lautan yang memantulkan cahaya bintang induknya.
+    `Jembatan kendali sunyi, hanya dengaran gemetar mesin pendingin dan napas tercekik kru. Di layar utama, planet Kepler-442c membesar—dunia hijau-biru dengan dua bulan, atmosfer kaya oksigen, Lautan yang memantulkan cahaya bintang induknya.
 
 "Persiapkan tim turun," perintah Aria, suaranya tenang tapi keras. "Kita butuh jawaban, bukan spekulasi."
 
@@ -140,8 +140,8 @@ Di langit, bintang pertama berkedip. Seolah menjawab.`
   return templates[(chapterNum - 1) % templates.length] + '\n\n' + templates[(chapterNum) % templates.length];
 }
 
-export default function ReaderPage({ params }: ReaderPageProps) {
-  const { slug, chapter: chapterParam } = params;
+export default async function ReaderPage({ params }: ReaderPageProps) {
+  const { slug, chapter: chapterParam } = await params;
   const chapterNum = parseInt(chapterParam, 10);
   const story = mockStory;
   const chapter = story.chapters.find(c => c.chapterNumber === chapterNum);
@@ -172,7 +172,7 @@ export default function ReaderPage({ params }: ReaderPageProps) {
   const [readingProgress, setReadingProgress] = useState(0);
   const [ttsPlaying, setTtsPlaying] = useState(false);
   const readerRef = useRef<HTMLDivElement>(null);
-  const progressTimeout = useRef<NodeJS.Timeout>();
+  const progressTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const modeConfig = modeConfigs[readingMode];
   const totalParagraphs = paragraphs.length;
@@ -186,7 +186,6 @@ export default function ReaderPage({ params }: ReaderPageProps) {
     }
     
     progressTimeout.current = setTimeout(() => {
-      // In production: save to database
       localStorage.setItem(`reading-progress-${slug}`, JSON.stringify({
         chapter: chapterNum,
         position: progress,
@@ -203,7 +202,6 @@ export default function ReaderPage({ params }: ReaderPageProps) {
     saveProgress(position);
   }, [saveProgress]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
@@ -244,7 +242,6 @@ export default function ReaderPage({ params }: ReaderPageProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [slug, chapterNum, nextChapter, readingMode, showSettings, showTOC]);
 
-  // Restore progress
   useEffect(() => {
     const saved = localStorage.getItem(`reading-progress-${slug}`);
     if (saved) {
@@ -264,7 +261,6 @@ export default function ReaderPage({ params }: ReaderPageProps) {
     }
   }, [slug, chapterNum]);
 
-  // Swipe detection
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -392,8 +388,8 @@ export default function ReaderPage({ params }: ReaderPageProps) {
             href={prevChapter ? `/reader/${slug}/${chapterNum - 1}` : '#'}
             className={cn(
               'flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all',
-              prevChapter 
-                ? 'bg-slate-800 text-slate-100 hover:bg-slate-700 border border-slate-700' 
+              prevChapter
+                ? 'bg-slate-800 text-slate-100 hover:bg-slate-700 border border-slate-700'
                 : 'bg-slate-800/50 text-slate-500 cursor-not-allowed border border-slate-700/50'
             )}
             onClick={(e) => { if (!prevChapter) e.preventDefault(); }}
@@ -503,59 +499,59 @@ export default function ReaderPage({ params }: ReaderPageProps) {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="font" className="space-y-6">
+                <TabsContent value="font" className="space-y-5">
                   <div>
-                    <label className="block text-sm font-medium mb-2 flex justify-between">
+                    <label className="block text-sm font-medium mb-3 flex items-center justify-between">
                       Ukuran Font
-                      <span className="text-amber-400">{fontSize}px</span>
+                      <span className="text-amber-400 font-mono">{fontSize}px</span>
                     </label>
                     <Slider
-                      min={14}
-                      max={26}
+                      min={12}
+                      max={28}
                       step={1}
-                      value={fontSize}
-                      onValueChange={setFontSize}
+                      value={[fontSize]}
+                      onValueChange={([value]) => setFontSize(value)}
                     />
                   </div>
+                  
                   <div>
-                    <label className="block text-sm font-medium mb-2 flex justify-between">
-                      Jarak Baris
-                      <span className="text-amber-400">{lineHeight}</span>
+                    <label className="block text-sm font-medium mb-3 flex items-center justify-between">
+                      Tinggi Baris
+                      <span className="text-amber-400 font-mono">{lineHeight}</span>
                     </label>
                     <Slider
-                      min={1.5}
-                      max={2.5}
-                      step={0.1}
-                      value={lineHeight}
-                      onValueChange={setLineHeight}
+                      min={1.4}
+                      max={2.2}
+                      step={0.05}
+                      value={[lineHeight]}
+                      onValueChange={([value]) => setLineHeight(value)}
                     />
                   </div>
+                  
                   <div>
-                    <label className="block text-sm font-medium mb-2 flex justify-between">
-                      Lebar Baca
-                      <span className="text-amber-400">720px</span>
-                    </label>
-                    <Slider
-                      min={500}
-                      max={900}
-                      step={50}
-                      value={720}
-                      onValueChange={(v) => document.documentElement.style.setProperty('--max-content-width', `${v}px`)}
-                    />
+                    <label className="block text-sm font-medium mb-3">Font Family</label>
+                    <div className="flex gap-3">
+                      <Button variant="outline" className="flex-1" onClick={() => document.documentElement.style.setProperty('--font-body', 'var(--font-inter)')}>
+                        Inter (Sans)
+                      </Button>
+                      <Button variant="outline" className="flex-1" onClick={() => document.documentElement.style.setProperty('--font-body', 'var(--font-playfair)')}>
+                        Playfair (Serif)
+                      </Button>
+                    </div>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="audio" className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Text-to-Speech</p>
-                      <p className="text-sm text-slate-500">Dengarkan cerita dibacakan (eksperimental)</p>
-                    </div>
-                    <Switch 
-                      checked={ttsPlaying} 
-                      onCheckedChange={setTtsPlaying} 
-                      aria-label="Aktifkan text-to-speech"
-                    />
+                <TabsContent value="audio" className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium mb-3 flex items-center justify-between">
+                      Text-to-Speech
+                      <Switch 
+                        checked={ttsPlaying} 
+                        onCheckedChange={setTtsPlaying} 
+                        aria-label="Aktifkan text-to-speech"
+                      />
+                    </label>
+                    <p className="text-sm text-slate-500 mt-1">Dengarkan cerita dibacakan (eksperimental)</p>
                   </div>
                   {ttsPlaying && (
                     <div className="space-y-3 p-4 bg-slate-800/50 rounded-xl">
@@ -605,7 +601,6 @@ export default function ReaderPage({ params }: ReaderPageProps) {
                   <X className="w-5 h-5" />
                 </Button>
               </div>
-              
               <div className="space-y-2 max-h-[60vh] overflow-y-auto">
                 {story.chapters.map((ch, index) => (
                   <Link

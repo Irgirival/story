@@ -31,7 +31,7 @@ function buildUserPrompt(params: {
     epic: 'Grandiose, heroik, sinematik, skala besar, inspiratif',
     melankolis: 'Sedih, reflektif, mendalam, nostalgia, bittersweet',
     misterius: 'Rahasia, teka-teki, menegangkan, twist, unreliable narrator',
-    seram: 'Horror psikologis, jumpscare, dread, uncanny, disturbing',
+    seram: 'Horor psikologis, jumpscare, dread, uncanny, disturbing',
     romantis: 'Cinta tulus, hangat, manis, fluff, emotional payoff',
     humoris: 'Lucu, ringan, entertaining, witty, comedic timing',
     filosofis: 'Pemikiran mendalam, eksistensial, thought-provoking, allegorical',
@@ -94,6 +94,7 @@ IMPORTANT:
 - Escape quotes as \\"
 - Content harus plain text, NO markdown formatting
 - Setiap paragraf dipisah \\n\\n
+
 - Output HANYA JSON, tidak ada teks tambahan`;
 }
 
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
 
     const message = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
-      maxTokens: 8192,
+      max_tokens: 8192,
       temperature: 0.8,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: prompt }],
@@ -152,7 +153,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ story: storyData });
   } catch (error: any) {
     console.error('Generate story error:', error);
-    
+
     if (error.status === 429) {
       return NextResponse.json(
         { message: 'Rate limit tercapai, tunggu sebentar' },
