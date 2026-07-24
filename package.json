@@ -10,7 +10,6 @@
   "postinstall": "prisma generate"
 },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.112.4",
     "@hookform/resolvers": "^5.4.0",
     "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.9.0",
@@ -30,7 +29,6 @@
     "lucide-react": "^1.25.0",
     "next": "16.2.10",
     "next-auth": "^5.0.0-beta.32",
-    "openai": "^6.48.0",
     "prisma": "^7.9.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
